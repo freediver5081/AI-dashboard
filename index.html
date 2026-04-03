@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>글로벌 AI 서비스 트렌드 (2026.03.27 ~ 04.03)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, 'Malgun Gothic', sans-serif;
+      background: #0f0f13;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f0f13 0%, #1a1a2e 50%, #2d1b69 100%);
+      color: #fff;
+      padding: 48px 24px 40px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    /* 요약 통계 */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      font-weight: 600;
+    }
+
+    /* 탭 필터 */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: rgba(255,255,255,0.04);
+      color: #aaa;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+    .tab-btn.active {
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .tab-btn.active[data-filter="all"] { background: #555; }
+    .tab-btn.active[data-filter="openai"] { background: #10a37f; }
+    .tab-btn.active[data-filter="anthropic"] { background: #d97706; }
+    .tab-btn.active[data-filter="google"] { background: #4285f4; }
+    .tab-btn.active[data-filter="microsoft"] { background: #0078d4; }
+    .tab-btn.active[data-filter="meta"] { background: #1877f2; }
+
+    /* 카드 그리드 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .card-header {
+      padding: 18px 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .badge.openai { background: #10a37f; }
+    .badge.anthropic { background: #d97706; }
+    .badge.google { background: #4285f4; }
+    .badge.microsoft { background: #0078d4; }
+    .badge.meta { background: #1877f2; }
+
+    .card-date {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .verified {
+      font-size: 9px;
+      color: #34d399;
+      background: rgba(52,211,153,0.1);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .card-body {
+      padding: 0 20px 18px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      color: #f0f0f0;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #999;
+      line-height: 1.7;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tag-feature { background: rgba(99,102,241,0.15); color: #818cf8; }
+    .tag-model { background: rgba(236,72,153,0.15); color: #f472b6; }
+    .tag-api { background: rgba(52,211,153,0.15); color: #34d399; }
+    .tag-business { background: rgba(251,191,36,0.15); color: #fbbf24; }
+    .tag-tool { background: rgba(96,165,250,0.15); color: #60a5fa; }
+
+    .card-footer {
+      padding: 0 20px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .source-tag {
+      font-size: 11px;
+      color: #60a5fa;
+      background: rgba(96,165,250,0.1);
+      padding: 3px 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .source-tag:hover {
+      background: rgba(96,165,250,0.2);
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 24px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .tab-btn { padding: 6px 12px; font-size: 12px; }
+      .stats-bar { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Global AI Service Trends</h1>
+  <p>2026.03.27 ~ 04.03 | 주요 AI 서비스 업데이트 & 뉴스 (출처 날짜 검증 완료)</p>
+</header>
+
+<div class="container">
+
+  <!-- 요약 통계 -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number" style="color:#10a37f">5</div>
+      <div class="stat-label">OpenAI</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#d97706">4</div>
+      <div class="stat-label">Anthropic</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#4285f4">2</div>
+      <div class="stat-label">Google</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#0078d4">1</div>
+      <div class="stat-label">Microsoft</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#1877f2">1</div>
+      <div class="stat-label">Meta / 기타</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#a78bfa">13</div>
+      <div class="stat-label">총 뉴스</div>
+    </div>
+  </div>
+
+  <!-- 필터 -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-filter="all">전체</button>
+    <button class="tab-btn" data-filter="openai">OpenAI</button>
+    <button class="tab-btn" data-filter="anthropic">Anthropic</button>
+    <button class="tab-btn" data-filter="google">Google</button>
+    <button class="tab-btn" data-filter="microsoft">Microsoft</button>
+    <button class="tab-btn" data-filter="meta">Meta / 기타</button>
+  </div>
+
+  <div class="card-grid" id="cardGrid">
+
+    <!-- ===== 04.03 Google Gemma 4 ===== -->
+    <div class="card" data-company="google" data-date="20260403a">
+      <div class="card-header">
+        <span class="badge google">Google</span>
+        <span class="card-date">04.03 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-model">모델 출시</span>
+        <div class="card-title">Gemma 4 시리즈 오픈소스 공개 — 4개 모델 동시 출시</div>
+        <div class="card-desc">
+          Gemma 4 26B-A4B, 31B, E2B, E4B 등 4개 경량 멀티모달 오픈 모델을 동시 공개.
+          소규모 파라미터로도 높은 추론 성능(GPQA 0.4~0.8)을 달성하며,
+          온디바이스 AI 및 스타트업 활용을 겨냥.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://llm-stats.com/llm-updates" target="_blank">LLM Stats (04.02)</a>
+        <a class="source-tag" href="https://llm-stats.com/ai-news" target="_blank">AI News (04.03)</a>
+      </div>
+    </div>
+
+    <!-- ===== 04.02 Anthropic 인수 ===== -->
+    <div class="card" data-company="anthropic" data-date="20260402a">
+      <div class="card-header">
+        <span class="badge anthropic">Anthropic</span>
+        <span class="card-date">04.02 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-business">인수</span>
+        <div class="card-title">바이오 AI 스타트업 Coefficient Bio 인수 — 약 4억 달러</div>
+        <div class="card-desc">
+          Anthropic이 바이오 AI 스타트업 Coefficient Bio를 약 4억 달러에 인수.
+          AI의 과학·생명공학 분야 확장을 위한 전략적 행보로 주목.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://llm-stats.com/ai-news" target="_blank">Techmeme (04.02)</a>
+      </div>
+    </div>
+
+    <!-- ===== 04.02 OpenAI TBPN 인수 ===== -->
+    <div class="card" data-company="openai" data-date="20260402b">
+      <div class="card-header">
+        <span class="badge openai">OpenAI</span>
+        <span class="card-date">04.02 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-business">인수</span>
+        <div class="card-title">비즈니스 토크쇼 TBPN 인수 — 미디어 영역 진출</div>
+        <div class="card-desc">
+          OpenAI가 화제의 창업자 중심 비즈니스 토크쇼 TBPN을 인수.
+          AI 기술 기업의 미디어·콘텐츠 영역 확장이라는 새로운 트렌드를 시사.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://llm-stats.com/ai-news" target="_blank">TechCrunch / WIRED (04.02)</a>
+      </div>
+    </div>
+
+    <!-- ===== 04.02 ChatGPT CarPlay ===== -->
+    <div class="card" data-company="openai" data-date="20260402c">
+      <div class="card-header">
+        <span class="badge openai">OpenAI</span>
+        <span class="card-date">04.02 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-feature">신규 기능</span>
+        <div class="card-title">ChatGPT, Apple CarPlay 지원 시작 — 차량 내 핸즈프리 대화</div>
+        <div class="card-desc">
+          iOS 26.4 이상 기기에서 지원 차량의 CarPlay 인터페이스를 통해
+          새 대화를 시작하거나 기존 대화를 이어갈 수 있는 핸즈프리 음성 기능 제공.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/openai" target="_blank">OpenAI 릴리스 노트 (04.02)</a>
+      </div>
+    </div>
+
+    <!-- ===== 04.02 Claude Code v2.1.90 ===== -->
+    <div class="card" data-company="anthropic" data-date="20260402d">
+      <div class="card-header">
+        <span class="badge anthropic">Anthropic</span>
+        <span class="card-date">04.02 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-tool">개발 도구</span>
+        <div class="card-title">Claude Code v2.1.90 — /powerup 대화형 학습 기능 추가</div>
+        <div class="card-desc">
+          Claude Code 기능을 애니메이션 데모와 함께 배울 수 있는 대화형 /powerup 레슨 추가.
+          더 강력한 세션 재개 기능과 다양한 안정성 개선 포함.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/anthropic" target="_blank">Anthropic 릴리스 노트 (04.02)</a>
+      </div>
+    </div>
+
+    <!-- ===== 04.02 Microsoft Copilot ===== -->
+    <div class="card" data-company="microsoft" data-date="20260402e">
+      <div class="card-header">
+        <span class="badge microsoft">Microsoft</span>
+        <span class="card-date">04.02 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-feature">기능 업그레이드</span>
+        <div class="card-title">365 Copilot에 Researcher 강화 + Critique 모드 도입</div>
+        <div class="card-desc">
+          Researcher 에이전트에 이중 AI 모델을 활용한 Critique 모드를 추가해 보고서 정확도 향상.
+          여러 AI 시스템의 출력을 비교하는 Council 모드와
+          Anthropic Claude 기반 Cowork 기능도 얼리 어답터에게 공개.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://techbriefly.com/2026/04/02/microsoft-upgrades-365-copilot-with-new-researcher-tools/" target="_blank">TechBriefly (04.02)</a>
+      </div>
+    </div>
+
+    <!-- ===== 04.01 Claude Code v2.1.89 ===== -->
+    <div class="card" data-company="anthropic" data-date="20260401a">
+      <div class="card-header">
+        <span class="badge anthropic">Anthropic</span>
+        <span class="card-date">04.01 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-tool">개발 도구</span>
+        <div class="card-title">Claude Code v2.1.89 — 빠른 세션 재개 + 새 훅 이벤트</div>
+        <div class="card-desc">
+          세션 재개 속도 개선, 새로운 훅 이벤트 시스템 추가.
+          권한 관리, 음성 기능, Windows 호환성, MCP 서버 안정성 등
+          전반적인 신뢰성 향상 패치 포함.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/anthropic" target="_blank">Anthropic 릴리스 노트 (04.01)</a>
+      </div>
+    </div>
+
+    <!-- ===== 03.31 Codex 0.118.0 ===== -->
+    <div class="card" data-company="openai" data-date="20260331a">
+      <div class="card-header">
+        <span class="badge openai">OpenAI</span>
+        <span class="card-date">03.31 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-tool">개발 도구</span>
+        <div class="card-title">Codex CLI 0.118.0 — Windows 샌드박스 네트워킹 + 디바이스 코드 로그인</div>
+        <div class="card-desc">
+          Windows 샌드박스 프록시 전용 네트워킹 지원, ChatGPT 디바이스 코드 로그인 추가.
+          codex exec에서 프롬프트+stdin 워크플로우 지원 및
+          TUI, MCP, 샌드박스 안정성 개선.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/openai" target="_blank">OpenAI 릴리스 노트 (03.31)</a>
+      </div>
+    </div>
+
+    <!-- ===== 03.31 Claude Code v2.1.88 ===== -->
+    <div class="card" data-company="anthropic" data-date="20260331b">
+      <div class="card-header">
+        <span class="badge anthropic">Anthropic</span>
+        <span class="card-date">03.31 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-tool">개발 도구</span>
+        <div class="card-title">Claude Code v2.1.88 — 깜빡임 없는 렌더링 + 명명된 서브에이전트</div>
+        <div class="card-desc">
+          가상 스크롤백을 활용한 깜빡임 없는 alt-screen 렌더링 도입.
+          @ 멘션에서 명명된 서브에이전트 제안 기능 추가.
+          PowerShell 도구 프리뷰, 권한 거부 훅 등 Windows 지원 강화.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/anthropic" target="_blank">Anthropic 릴리스 노트 (03.31)</a>
+      </div>
+    </div>
+
+    <!-- ===== 03.31 Qwen 3.6 Plus ===== -->
+    <div class="card" data-company="meta" data-date="20260331c">
+      <div class="card-header">
+        <span class="badge meta">Alibaba / Qwen</span>
+        <span class="card-date">03.31 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-model">모델 출시</span>
+        <div class="card-title">Qwen 3.6 Plus 공개 — GPQA 0.9 달성</div>
+        <div class="card-desc">
+          알리바바 Qwen 팀이 독점 모델 Qwen 3.6 Plus를 공개.
+          GPQA 벤치마크에서 0.9를 기록하며 최상위 수준의 추론 성능을 시연.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://llm-stats.com/llm-updates" target="_blank">LLM Stats (03.31)</a>
+      </div>
+    </div>
+
+    <!-- ===== 03.30 Claude API max_tokens ===== -->
+    <div class="card" data-company="anthropic" data-date="20260330a">
+      <div class="card-header">
+        <span class="badge anthropic">Anthropic</span>
+        <span class="card-date">03.30 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-api">API 업데이트</span>
+        <div class="card-title">Message Batches API max_tokens 300K로 상향</div>
+        <div class="card-desc">
+          Claude Opus 4.6 및 Sonnet 4.6 모델에서 Batch API의 최대 토큰 한도를 300K로 상향.
+          장문 콘텐츠 생성, 대규모 구조화 데이터, 대형 코드 작업에 활용 가능.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/anthropic" target="_blank">Anthropic 릴리스 노트 (03.30)</a>
+      </div>
+    </div>
+
+    <!-- ===== 03.27 ChatGPT 앱 연동 ===== -->
+    <div class="card" data-company="openai" data-date="20260327a">
+      <div class="card-header">
+        <span class="badge openai">OpenAI</span>
+        <span class="card-date">03.27 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-feature">신규 기능</span>
+        <div class="card-title">ChatGPT에 Box·Notion·Linear·Dropbox 쓰기 기능 추가</div>
+        <div class="card-desc">
+          ChatGPT의 외부 앱 연동이 읽기에서 쓰기로 확장.
+          Box, Notion, Linear, Dropbox에 직접 콘텐츠를 작성하고
+          작업을 실행할 수 있는 새로운 액션 기능 추가.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/openai" target="_blank">OpenAI 릴리스 노트 (03.27)</a>
+      </div>
+    </div>
+
+    <!-- ===== 03.27 ChatGPT 인터랙티브 학습 ===== -->
+    <div class="card" data-company="openai" data-date="20260327b">
+      <div class="card-header">
+        <span class="badge openai">OpenAI</span>
+        <span class="card-date">03.27 <span class="verified">검증</span></span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag tag-feature">신규 기능</span>
+        <div class="card-title">ChatGPT 인터랙티브 학습 모듈 — 수학·과학 70개+ 주제</div>
+        <div class="card-desc">
+          특정 주제 질문 시 변수를 실시간으로 조작할 수 있는 인터랙티브 시각 모듈 제공.
+          피타고라스 정리, 이상기체 법칙, 렌즈 방정식 등
+          70개 이상 수학·과학 주제로 출시.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="source-tag" href="https://releasebot.io/updates/openai" target="_blank">OpenAI 릴리스 노트 (03.27)</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const companyButtons = document.querySelectorAll('.tab-btn[data-filter]');
+  const cards = document.querySelectorAll('.card');
+
+  let activeCompany = 'all';
+
+  function applyFilter() {
+    cards.forEach(card => {
+      const matchCompany = activeCompany === 'all' || card.dataset.company === activeCompany;
+      card.style.display = matchCompany ? '' : 'none';
+    });
+  }
+
+  companyButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      companyButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add(  'active');
+      activeCompany = btn.dataset.filter;
+      applyFilter();
+    });
+  });
+</script>
+
+</body>
+</html>
