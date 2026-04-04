@@ -405,6 +405,137 @@
     .no-results.visible { display: block; }
     body.light .no-results { color: #555; }
 
+    /* 바텀 슬라이드업 모달 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 70vh;
+      background: #1e1e2e;
+      border-radius: 16px 16px 0 0;
+      z-index: 1001;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-out;
+      overflow-y: auto;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.4);
+    }
+
+    .modal-panel.active {
+      transform: translateY(0);
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #aaa;
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover { background: rgba(255,255,255,0.2); }
+
+    .modal-content {
+      padding: 20px 24px 32px;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f0f0f0;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .modal-desc {
+      font-size: 15px;
+      color: #bbb;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .modal-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modal-sources a {
+      font-size: 13px;
+      color: #60a5fa;
+      background: rgba(96,165,250,0.12);
+      padding: 6px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .modal-sources a:hover {
+      background: rgba(96,165,250,0.25);
+    }
+
+    body.light .modal-panel {
+      background: #ffffff;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+    }
+
+    body.light .modal-handle { background: rgba(0,0,0,0.15); }
+    body.light .modal-close { background: rgba(0,0,0,0.06); color: #666; }
+    body.light .modal-close:hover { background: rgba(0,0,0,0.1); }
+    body.light .modal-title { color: #1a1a1a; }
+    body.light .modal-desc { color: #555; }
+
+    body.light .modal-sources a {
+      color: #2563eb;
+      background: rgba(37,99,235,0.08);
+    }
+
+    body.light .modal-sources a:hover {
+      background: rgba(37,99,235,0.15);
+    }
+
     @media (max-width: 600px) {
       header h1 { font-size: 24px; }
       .card-grid { grid-template-columns: 1fr; }
