@@ -865,6 +865,14 @@
   <div class="no-results" id="noResults">검색 결과가 없습니다</div>
 </div>
 
+<!-- 바텀 슬라이드업 모달 -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+<div class="modal-panel" id="modalPanel">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
 <script>
   const companyButtons = document.querySelectorAll('.tab-btn[data-filter]');
   const cards = document.querySelectorAll('.card');
@@ -942,6 +950,60 @@
     document.getElementById('themeIcon').textContent = '🌙';
     document.getElementById('themeLabel').textContent = '다크 모드';
   }
+
+  // 바텀 슬라이드업 모달
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalPanel = document.getElementById('modalPanel');
+  const modalContent = document.getElementById('modalContent');
+
+  function openModal(card) {
+    const badge = card.querySelector('.badge');
+    const badgeClass = badge.className.replace('badge ', '');
+    const badgeText = badge.textContent.trim();
+    const date = card.querySelector('.card-date').innerHTML;
+    const tag = card.querySelector('.card-tag');
+    const title = card.querySelector('.card-title').textContent.trim();
+    const desc = card.querySelector('.card-desc').textContent.trim();
+    const sources = card.querySelectorAll('.source-tag');
+
+    let sourcesHTML = '';
+    sources.forEach(s => {
+      sourcesHTML += `<a href="${s.href}" target="_blank" rel="noopener">${s.textContent.trim()}</a>`;
+    });
+
+    modalContent.innerHTML = `
+      <div class="modal-header">
+        <span class="badge ${badgeClass}">${badgeText}</span>
+        <span class="card-date">${date}</span>
+      </div>
+      ${tag ? `<span class="card-tag ${tag.className.replace('card-tag ', '')}">${tag.textContent.trim()}</span>` : ''}
+      <div class="modal-title">${title}</div>
+      <div class="modal-desc">${desc}</div>
+      <div class="modal-sources">${sourcesHTML}</div>
+    `;
+
+    modalOverlay.classList.add('active');
+    modalPanel.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+    modalPanel.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  cards.forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.source-tag')) return;
+      openModal(card);
+    });
+  });
 </script>
 
 </body>
