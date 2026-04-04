@@ -458,12 +458,19 @@
 
   <!-- 필터 -->
   <div class="tab-bar">
-    <button class="tab-btn active" data-filter="all">전체</button>
-    <button class="tab-btn" data-filter="openai">OpenAI</button>
-    <button class="tab-btn" data-filter="anthropic">Anthropic</button>
-    <button class="tab-btn" data-filter="google">Google</button>
-    <button class="tab-btn" data-filter="microsoft">Microsoft</button>
-    <button class="tab-btn" data-filter="meta">Meta / 기타</button>
+    <div class="tab-filters">
+      <button class="tab-btn active" data-filter="all">전체</button>
+      <button class="tab-btn" data-filter="openai">OpenAI</button>
+      <button class="tab-btn" data-filter="anthropic">Anthropic</button>
+      <button class="tab-btn" data-filter="google">Google</button>
+      <button class="tab-btn" data-filter="microsoft">Microsoft</button>
+      <button class="tab-btn" data-filter="meta">Meta / 기타</button>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="키워드로 검색...">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+    </div>
   </div>
 
   <div class="card-grid" id="cardGrid">
@@ -724,19 +731,52 @@
     </div>
 
   </div>
+  <div class="no-results" id="noResults">검색 결과가 없습니다</div>
 </div>
 
 <script>
   const companyButtons = document.querySelectorAll('.tab-btn[data-filter]');
   const cards = document.querySelectorAll('.card');
+  const searchInput = document.getElementById('searchInput');
+  const searchClear = document.getElementById('searchClear');
+  const noResults = document.getElementById('noResults');
 
   let activeCompany = 'all';
 
   function applyFilter() {
+    const keyword = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
     cards.forEach(card => {
       const matchCompany = activeCompany === 'all' || card.dataset.company === activeCompany;
-      card.style.display = matchCompany ? '' : 'none';
+      let matchSearch = true;
+      if (keyword) {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+        matchSearch = title.includes(keyword) || desc.includes(keyword);
+      }
+
+      if (matchCompany && matchSearch) {
+        card.classList.remove('hidden');
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+        card.style.display = 'none';
+      }
     });
+
+    // 빈 결과 메시지
+    noResults.classList.toggle('visible', visibleCount === 0);
+
+    // 클리어 버튼 표시
+    searchClear.classList.toggle('visible', keyword.length > 0);
+  }
+
+  function clearSearch() {
+    searchInput.value = '';
+    applyFilter();
+    searchInput.focus();
   }
 
   companyButtons.forEach(btn => {
@@ -747,6 +787,8 @@
       applyFilter();
     });
   });
+
+  searchInput.addEventListener('input', applyFilter);
 
   // 다크/라이트 모드 전환
   function toggleTheme() {
